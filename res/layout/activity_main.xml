@@ -23,6 +23,7 @@
 
     <!-- Spielfeld -->
     <LinearLayout
+        android:id="@+id/llSpielfeld"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,6 +40,7 @@
 
             <!-- Button1 -->
             <Button
+                android:id="@+id/btn1"
                 tools:text="X"
                 style="@style/field" />
 
@@ -47,6 +49,7 @@
 
             <!-- Button2 -->
             <Button
+                android:id="@+id/btn2"
                 tools:text="X"
                 style="@style/field" />
 
@@ -55,14 +58,15 @@
 
             <!-- Button3 -->
             <Button
+                android:id="@+id/btn3"
                 tools:text="X"
                 style="@style/field" />
 
         </LinearLayout>
-        
+
         <!-- Divider -->
         <View style="@style/horDivider" />
-        
+
         <!-- Row2 -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,6 +74,7 @@
 
             <!-- Button1 -->
             <Button
+                android:id="@+id/btn4"
                 tools:text="X"
                 style="@style/field" />
 
@@ -78,6 +83,7 @@
 
             <!-- Button2 -->
             <Button
+                android:id="@+id/btn5"
                 tools:text="X"
                 style="@style/field" />
 
@@ -86,6 +92,7 @@
 
             <!-- Button3 -->
             <Button
+                android:id="@+id/btn6"
                 tools:text="X"
                 style="@style/field" />
 
@@ -93,7 +100,7 @@
 
         <!-- Divider -->
         <View style="@style/horDivider" />
-        
+
         <!-- Row3 -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,6 +109,7 @@
 
             <!-- Button1 -->
             <Button
+                android:id="@+id/btn7"
                 tools:text="X"
                 style="@style/field" />
 
@@ -110,6 +118,7 @@
 
             <!-- Button2 -->
             <Button
+                android:id="@+id/btn8"
                 tools:text="X"
                 style="@style/field" />
 
@@ -118,11 +127,24 @@
 
             <!-- Button3 -->
             <Button
+                android:id="@+id/btn9"
                 tools:text="X"
                 style="@style/field" />
 
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Button zum Resetten -->
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llSpielfeld"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
