@@ -41,10 +41,12 @@ class MainActivity : AppCompatActivity() {
 
     //region Erstellung der Variablen für die Activity
 
-    //TODO Info über aktuellen Spieler
+    // Info über aktuellen Spieler
     // Variablen für SpielerZeichen und Anzeige Spieler
     private val playerX: String = "X"
     private val playerO: String = "O"
+    // variable für spielende
+    private var matchFinished: Boolean = false
     // Variable für eine Liste, in der wir alle Buttons zusammenführen
     private lateinit var btnList: List<Button>
     // currentPlayer true steht für Spieler 1 / wenn false, dann Spieler 2
@@ -60,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         // Verwendung der Binding-Class
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         //region Initialisierung der Variablen
 
@@ -91,32 +92,42 @@ class MainActivity : AppCompatActivity() {
     //TODO Siegbedingung und Folgen
     // Funktion zu Abfrage ob Siegbedingung erüllt
     private fun checkWinner(){
-        // erste siegbedingung
+        // siegbedingungen
         if (btnList[0].text == btnList[1].text && btnList[0].text == btnList[2].text && btnList[2].text.isNotEmpty()){ //row1
             Log.i("SIEGER", "1,2,3")
+            // match wird als "beendet" gekennzeichnet
+            matchFinished = true
         } else if (btnList[3].text == btnList[4].text && btnList[3].text == btnList[5].text && btnList[5].text.isNotEmpty()){ //row2
             Log.i("SIEGER", "4,5,6")
+            matchFinished = true
         } else if (btnList[6].text == btnList[7].text && btnList[6].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //row3
             Log.i("SIEGER", "7,8,9")
+            matchFinished = true
         } else if (btnList[0].text == btnList[3].text && btnList[0].text == btnList[6].text && btnList[6].text.isNotEmpty()){ //col1
             Log.i("SIEGER", "1,4,7")
+            matchFinished = true
         } else if (btnList[1].text == btnList[4].text && btnList[1].text == btnList[7].text && btnList[7].text.isNotEmpty()){ //col2
             Log.i("SIEGER", "2,5,8")
+            matchFinished = true
         } else if (btnList[2].text == btnList[5].text && btnList[2].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //col3
             Log.i("SIEGER", "3,6,9")
+            matchFinished = true
         } else if (btnList[0].text == btnList[4].text && btnList[0].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //olur
             Log.i("SIEGER", "1,5,9")
+            matchFinished = true
         } else if (btnList[2].text == btnList[4].text && btnList[2].text == btnList[6].text && btnList[6].text.isNotEmpty()){ //orul
             Log.i("SIEGER", "3,5,7")
+            matchFinished = true
         }
     }
-
 
     // Resetten / New Game (Funktion für diese Aktion definieren)
     private fun resetGame() {
         // forEach geht einmal durch die Buttonliste und ändert den Text bei
         // jedem Spielfeld auf einen leeren String
         btnList.forEach { e -> e.text = "" }
+        // belegbarkeit der Felder wieder herstellen
+        matchFinished = false
     }
 
     // Funktion zum Markieren der Felder (Abhängig vom Spieler(currentPlayer))
@@ -140,27 +151,30 @@ class MainActivity : AppCompatActivity() {
     // Feld belegen mit X oder O
     @SuppressLint("SetTextI18n") // Hinweis ignorieren
     private fun newMarkField(btn: Button){ //Paramater in Form des angeklickten Buttons
-        // isEmpty = nur wenn das Feld leer ist, kann eine Veränderung/Belegung erfolgen
-        if (btn.text.isEmpty()){
-            if (currentPlayer){
-                btn.text = playerX
-                // wenn x gesetzt, hinweis auf nächsten Spieler
-                binding.tvNext.text = "Spieler $playerO ist am Zug"
-                currentPlayer = false
+        // abfrage, ob spiel noch offen oder schon finished
+        if (!matchFinished){
+            // isEmpty = nur wenn das Feld leer ist, kann eine Veränderung/Belegung erfolgen
+            if (btn.text.isEmpty()){
+                if (currentPlayer){
+                    btn.text = playerX
+                    // wenn x gesetzt, hinweis auf nächsten Spieler
+                    binding.tvNext.text = "Spieler $playerO ist am Zug"
+                    currentPlayer = false
+                }
+                else {
+                    btn.text = playerO
+                    // wenn o gesetzt, hinweis auf nächsten Spieler
+                    binding.tvNext.text = "Spieler $playerX ist am Zug"
+                    currentPlayer = true
+                }
             }
-            else {
-                btn.text = playerO
-                // wenn o gesetzt, hinweis auf nächsten Spieler
-                binding.tvNext.text = "Spieler $playerX ist am Zug"
-                currentPlayer = true
-            }
+            // überprüfung ob Siegeszug
+            checkWinner()
         }
-        // überprüfung ob Siegeszug
-        checkWinner()
+
+
 
 
     }
-
-
 
 }
