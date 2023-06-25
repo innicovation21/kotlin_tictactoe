@@ -166,11 +166,8 @@
 
         <Button
             android:id="@+id/resetBtn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:text="@string/resetScore"
-            />
+            style="@style/btnMenu" />
 
         <View
             android:layout_width="0dp"
@@ -179,10 +176,8 @@
 
         <Button
             android:id="@+id/nextActBtn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/changeNames"/>
+            android:text="@string/changeNames"
+            style="@style/btnMenu"/>
 
     </LinearLayout>
 
