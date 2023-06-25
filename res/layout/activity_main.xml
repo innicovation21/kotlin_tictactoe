@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:padding="32dp"
+    android:background="@color/bgCol"
     >
 
     <TextView
@@ -12,139 +15,177 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Als nächstes: X"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintVertical_bias="0.02"
         />
 
-    <!-- Spielfeld -->
+
+    <!--    Spieler 1-->
+    <TextView
+        android:id="@+id/tvPlayer1Name"
+        style="@style/playerTv"
+        tools:text="Player1"
+        app:layout_constraintStart_toStartOf="@id/llSpielfeld"
+        tools:ignore="MissingConstraints" />
+    <!--    Spieler 2-->
+    <TextView
+        android:id="@+id/tvPlayer2Name"
+        style="@style/playerTv"
+        tools:text="Player2"
+        app:layout_constraintEnd_toEndOf="@id/llSpielfeld"
+        tools:ignore="MissingConstraints" />
+    <!--    Punktezähler Spieler 2-->
+    <TextView
+        android:id="@+id/tvPlayer1Score"
+        style="@style/scoreBoard"
+        tools:text="0"
+        app:layout_constraintStart_toStartOf="@id/llSpielfeld"
+        tools:ignore="MissingConstraints"/>
+    <!--    Punktezähler Spieler 2-->
+    <TextView
+        android:id="@+id/tvPlayer2Score"
+        style="@style/scoreBoard"
+        tools:text="0"
+        app:layout_constraintEnd_toEndOf="@id/llSpielfeld"
+        tools:ignore="MissingConstraints" />
+
+    <!--Spielfeld-->
     <LinearLayout
+        android:background="@android:color/holo_orange_dark"
         android:id="@+id/llSpielfeld"
-        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="310dp"
-        android:layout_height="310dp"
-        android:background="#CC3E3E">
+        android:orientation="vertical">
 
-        <!-- Row1 -->
+        <!--        Reihe 1 -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <!-- Button1 -->
             <Button
                 android:id="@+id/btn1"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:ignore="DuplicateSpeakableTextCheck"
+                tools:text="X" />
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button2 -->
             <Button
                 android:id="@+id/btn2"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button3 -->
             <Button
                 android:id="@+id/btn3"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
         </LinearLayout>
-
+        <!--        Reihe 2 -->
         <!-- Divider -->
         <View style="@style/horDivider" />
-
-        <!-- Row2 -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <!-- Button1 -->
             <Button
                 android:id="@+id/btn4"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button2 -->
             <Button
                 android:id="@+id/btn5"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button3 -->
             <Button
                 android:id="@+id/btn6"
-                tools:text="X"
-                style="@style/field" />
+                style="@style/field"
+                tools:text="X"/>
 
         </LinearLayout>
-
         <!-- Divider -->
         <View style="@style/horDivider" />
-
-        <!-- Row3 -->
+        <!--        Reihe 3 -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <!-- Button1 -->
             <Button
                 android:id="@+id/btn7"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button2 -->
             <Button
                 android:id="@+id/btn8"
-                tools:text="X"
-                style="@style/field" />
-
+                style="@style/field"
+                tools:text="X"/>
             <!-- Divider -->
             <View style="@style/vertDivider" />
-
-            <!-- Button3 -->
             <Button
                 android:id="@+id/btn9"
-                tools:text="X"
-                style="@style/field" />
+                style="@style/field"
+                tools:text="X"/>
 
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Button zum Resetten -->
-    <Button
-        android:id="@+id/btnReset"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/btnArea"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/new_game"
+        app:layout_constraintTop_toBottomOf="@id/llSpielfeld"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llSpielfeld"
-        />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnNewGame"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/restart"
+            />
+        
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"/>
+
+        <Button
+            android:id="@+id/resetBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/resetScore"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"/>
+
+        <Button
+            android:id="@+id/nextActBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/changeNames"/>
+
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
