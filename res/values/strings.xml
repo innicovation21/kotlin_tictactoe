@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">TicTacToeKotlin</string>
-    <string name="new_game">New Game</string>
+    <string name="app_name">tictactoe_example</string>
+    <string name="restart">New Game</string>
+    <string name="changeNames">New Names</string>
+    <string name="resetScore">Reset Score</string>
 </resources>
