@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondActivity"
+    android:background="@drawable/myname3">
+
+    <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Namen ändern"
+        style="@style/screenTitle" />
+
+    <LinearLayout
+        android:id="@+id/changeNamePlayer1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.14"
+        android:layout_margin="10dp"
+        style="@style/changeNameArea">
+
+        <TextView
+            android:id="@+id/tvOldPlayer1"
+            tools:text="pl1"
+            style="@style/oldName" />
+
+        <EditText
+            android:id="@+id/inputP1"
+            android:hint="... neuen Namen eingeben"
+            style="@style/editTextField" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/changeNamePlayer2"
+        app:layout_constraintTop_toBottomOf="@id/changeNamePlayer1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:layout_margin="10dp"
+        style="@style/changeNameArea"
+        >
+
+        <TextView
+            android:id="@+id/tvOldPlayer2"
+            tools:text="pl2"
+            style="@style/oldName" />
+
+        <EditText
+            android:id="@+id/inputP2"
+            android:hint="... neuen Namen eingeben"
+            style="@style/editTextField" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginTop="100dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/changeNamePlayer2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="neue Namen speichern"/>
+
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:textSize="30sp"
+        android:text="zurück"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
