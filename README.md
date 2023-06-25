@@ -6,7 +6,7 @@ In diesem kleinen Projekt wenden wir das erste mal unser Basiswissen an und lern
 
 <br>
 
-** behandelte Themen in diesem Projekt **
+**Behandelte Themen in diesem Projekt**
 
 - Benutzeroberfläche mit Constraint- und LinearLayout erstellen
   
