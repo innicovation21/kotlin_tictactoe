@@ -1,124 +1,174 @@
-package com.kotlinproject.tictactoekotlin
+package com.kotlinproject.tictactoe_example
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import com.kotlinproject.tictactoekotlin.databinding.ActivityMainBinding
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import com.kotlinproject.tictactoe_example.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    //region Baustellen
-
-    //region MVP (Minimum Viable Product)
-    // belegtes Feld, darf nicht verändert werden können
-    // Resetten / New Game
-    // Info über aktuellen Spieler
-    //TODO Siegbedingung und Folgen
-    //TODO (NEU) Info über Sieger / Unentschieden
-    //endregion
-
-    //region Feature I
-    //TODO Spielernamenanzeige
-    //TODO Punktezähler
-    //endregion
-
-    //region Feature II (lokaler Speicher + SecondActivity)
-    //TODO (NEU) zusätzliche Activity für Namenseingabe, Speicherung und Zuweisung
-    //TODO (NEU) Lokale Speicherung der Spielerinformationen
-    //TODO (NEU) Activity wechseln können (von Main zu Second und zurück)
-    //TODO (NEU) Datentransfer zwischen Activities (Bsp neuer Name)
-    //endregion
-
-    //region Feature III
-    //TODO (NEU) Anzeige Siege insgesamt
-    //TODO (NEU) Liste aller eingetragenen Spieler
-    //endregion
-
-    //endregion
-
-
+    
     //region Erstellung der Variablen für die Activity
-
-    // Info über aktuellen Spieler
+    // currentPlayer true steht für Spieler 1(X) / wenn false, dann Spieler 2(O)
+    private var currentPlayer: Boolean = true
     // Variablen für SpielerZeichen und Anzeige Spieler
-    private val playerX: String = "X"
-    private val playerO: String = "O"
+    private var playerX: String = "Spieler 1" //X
+    private var playerO: String = "Spieler 2" //O
+    // Variablen für Spielerpunkte
+    private var scrP1 = 0
+    private var scrP2 = 0
+    // Variable für Matchsieger
+    private var matchWinner: String = ""
     // variable für spielende
     private var matchFinished: Boolean = false
     // Variable für eine Liste, in der wir alle Buttons zusammenführen
     private lateinit var btnList: List<Button>
-    // currentPlayer true steht für Spieler 1 / wenn false, dann Spieler 2
-    private var currentPlayer: Boolean = true
-
+    // Variable für AlertDialog
+    private lateinit var showEnd: AlertDialog
     // Einbindung der Binding-Class, um Zugriff auf unsere Views zu haben
     private lateinit var binding: ActivityMainBinding
+    // Einbindung des lokalen Speichers und einem dazugehörigen Editor
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: Editor
 
     //endregion
-
+    
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Verwendung der Binding-Class
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //region Sonstiges
+        //AlertDialog bei Sieg
+        showEnd = AlertDialog.Builder(this)
+            .setView(R.layout.custom_alert)
+            .setOnDismissListener {
+                resetGame()
+                Toast.makeText(this, "$matchWinner hat das letzte Match gewonnen.", Toast.LENGTH_SHORT).show()
+            }
+            .create()
+
+        //endregion
+
         //region Initialisierung der Variablen
 
-        // tvNext gibt direkt an, wer beginnt
-        binding.tvNext.text = "Spieler $playerX beginnt"
+        // Initialisierung der SharedPreferences
+        sharedPreferences = getSharedPreferences("unserSpeicher", Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
 
-        // Buttons in die Button-Liste einfügen (Initialisierung)
+
+
+        //region Score der Spieler eintragen
+
+        // Abrufen der lokal gespeicherten Punktestände von Spieler 1 und Spieler 2 und den Variablen zuweisen
+        scrP1 = sharedPreferences.getInt("scrP1", 0)
+        scrP2 = sharedPreferences.getInt("scrP2", 0)
+
+        binding.tvPlayer1Score.text = scrP1.toString()
+        binding.tvPlayer2Score.text = scrP2.toString()
+
+        //endregion
+
+
+        //region Buttons in die Button-Liste einfügen (Initialisierung)
         btnList= listOf(binding.btn1, binding.btn2, binding.btn3,
             binding.btn4, binding.btn5, binding.btn6, binding.btn7, binding.btn8,
             binding.btn9)
+        //endregion
+
+        //region Namen bei Activity-Start zuweisen
+        // Mögliche mitgegebene IntentPakete abrufen (bei Appstart existieren diese nicht, daher "null")
+        val getName1 = intent.getStringExtra("name1")
+        // wenn getName1 nicht null ist (das geht nur, wenn die mainactivity von activity2 aus gestartet wurde)
+        if (getName1!=null){
+            playerX = getName1.toString()
+            //dann wird der name aus der namensänderung eingesetzt
+            binding.tvPlayer1Name.text = "$getName1 (X)"
+        }else {
+            // ansonsten, da appstart, wird die default variable eingesetzt
+            binding.tvPlayer1Name.text = "$playerX (X)"
+        }
+
+
+        val getName2 = intent.getStringExtra("name2")
+        if (getName2!=null){
+            playerO = getName2
+            binding.tvPlayer2Name.text = "$getName2 (O)"
+        }else {
+            binding.tvPlayer2Name.text = "$playerO (O)"
+        }
+
+        //endregion
+
+
+
+        // tvNext gibt direkt an, wer beginnt
+        binding.tvNext.text = "$playerX beginnt" //Hinweise aufgrund hardcoded Text. Wir belassen es dabei für diese BeispielApp
 
         //endregion
 
         //region Funktionen zuweisen
-
-        //ALT: binding.btn1.setOnClickListener { markField() } // Problem: gilt nur für btn1
-
-        // e = Element der Liste (ein Button, weil Liste nur Buttons enthalten kann)
         // Funktion wird so ALLEN Feldern zugewiesen
         btnList.forEach { e -> e.setOnClickListener { newMarkField(e) } }
 
-        //Resetten / New Game (Funktion einem Button zuweisen)
-        binding.btnReset.setOnClickListener { resetGame() }
+
+        binding.btnNewGame.setOnClickListener { resetGame() }
+
+        binding.nextActBtn.setOnClickListener { nextScreen() }
+
+        binding.resetBtn.setOnClickListener { resetScore() }
 
         //endregion
     }
 
-    //TODO Siegbedingung und Folgen
-    // Funktion zu Abfrage ob Siegbedingung erüllt
+    //region Funktionen
+    // Funktion zum Überprüfen ob Siegszenario erfüllt
     private fun checkWinner(){
-        // siegbedingungen
+        // Siegbedingungen
         if (btnList[0].text == btnList[1].text && btnList[0].text == btnList[2].text && btnList[2].text.isNotEmpty()){ //row1
-            Log.i("SIEGER", "1,2,3")
+            //Log.i("SIEGER", "1,2,3")
             // match wird als "beendet" gekennzeichnet
-            matchFinished = true
+            //matchFinished = true
+            matchDone()
         } else if (btnList[3].text == btnList[4].text && btnList[3].text == btnList[5].text && btnList[5].text.isNotEmpty()){ //row2
-            Log.i("SIEGER", "4,5,6")
-            matchFinished = true
+            matchDone()
         } else if (btnList[6].text == btnList[7].text && btnList[6].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //row3
-            Log.i("SIEGER", "7,8,9")
-            matchFinished = true
+            matchDone()
         } else if (btnList[0].text == btnList[3].text && btnList[0].text == btnList[6].text && btnList[6].text.isNotEmpty()){ //col1
-            Log.i("SIEGER", "1,4,7")
-            matchFinished = true
+            matchDone()
         } else if (btnList[1].text == btnList[4].text && btnList[1].text == btnList[7].text && btnList[7].text.isNotEmpty()){ //col2
-            Log.i("SIEGER", "2,5,8")
-            matchFinished = true
+            matchDone()
         } else if (btnList[2].text == btnList[5].text && btnList[2].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //col3
-            Log.i("SIEGER", "3,6,9")
-            matchFinished = true
+            matchDone()
         } else if (btnList[0].text == btnList[4].text && btnList[0].text == btnList[8].text && btnList[8].text.isNotEmpty()){ //olur
-            Log.i("SIEGER", "1,5,9")
-            matchFinished = true
+            matchDone()
         } else if (btnList[2].text == btnList[4].text && btnList[2].text == btnList[6].text && btnList[6].text.isNotEmpty()){ //orul
-            Log.i("SIEGER", "3,5,7")
-            matchFinished = true
+            matchDone()
         }
+    }
+
+    // Funktion für MatchEnde
+    private fun matchDone(){
+        matchFinished = true
+        if (currentPlayer){
+            matchWinner = playerO
+            scrP2++
+            binding.tvPlayer2Score.text = scrP2.toString()
+            editor.putInt("scrP2", scrP2).apply()
+        } else {
+            matchWinner = playerX
+            scrP1++
+            binding.tvPlayer1Score.text = scrP1.toString()
+            editor.putInt("scrP1", scrP1).apply()
+        }
+        showEnd.show()
     }
 
     // Resetten / New Game (Funktion für diese Aktion definieren)
@@ -130,24 +180,6 @@ class MainActivity : AppCompatActivity() {
         matchFinished = false
     }
 
-    // Funktion zum Markieren der Felder (Abhängig vom Spieler(currentPlayer))
-    // Problem: Nicht wiederverwendbar, weil gilt nur für btn1
-    private fun markField() {
-        // Bedingung: currentPlayer = true -> dann:
-        if (currentPlayer) {
-            // btn1.text ein "X" einfügen
-            binding.btn1.text = "X"
-            // und Orientierungsvariable auf "false" switchen
-            currentPlayer = false
-        } else { // ansonsten:
-            // btn1.text ein "O" einfügen
-            binding.btn1.text = "O"
-            // und Orientierungsvariable auf "true" switchen
-            currentPlayer = true
-        }
-    }
-
-    // Lösung: Wiederverwendbare Funktion für Buttons/Felder
     // Feld belegen mit X oder O
     @SuppressLint("SetTextI18n") // Hinweis ignorieren
     private fun newMarkField(btn: Button){ //Paramater in Form des angeklickten Buttons
@@ -156,15 +188,15 @@ class MainActivity : AppCompatActivity() {
             // isEmpty = nur wenn das Feld leer ist, kann eine Veränderung/Belegung erfolgen
             if (btn.text.isEmpty()){
                 if (currentPlayer){
-                    btn.text = playerX
+                    btn.text = "X"
                     // wenn x gesetzt, hinweis auf nächsten Spieler
-                    binding.tvNext.text = "Spieler $playerO ist am Zug"
+                    binding.tvNext.text = "$playerO ist am Zug"
                     currentPlayer = false
                 }
                 else {
-                    btn.text = playerO
+                    btn.text = "O"
                     // wenn o gesetzt, hinweis auf nächsten Spieler
-                    binding.tvNext.text = "Spieler $playerX ist am Zug"
+                    binding.tvNext.text = "$playerX ist am Zug"
                     currentPlayer = true
                 }
             }
@@ -177,4 +209,29 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // zum Screen für Namensänderung
+    private fun nextScreen(){
+        // starten einer anderen Activity (in der variable "intent" legen wir fest,
+        // um welche Activity es sich handelt)
+        val intent = Intent(this, SecondActivity::class.java)
+        // wir geben die namen von Spieler 1 und 2 mit
+        intent.putExtra("name1", playerX)
+        intent.putExtra("name2", playerO)
+        // starten der zugewiesenen Activity
+        startActivity(intent)
+    }
+
+    // Resetten der Punkte
+    private fun resetScore(){
+        //Variable mit Wert 0 zum späteren zuweisen
+        val zero = 0
+        // im lokalen Speicher die Punkte-Stände auf 0 setzen
+        editor.putInt("scrP1", zero).apply()
+        editor.putInt("scrP2", zero).apply()
+        // Punkteanzeigen ebenfalls auf 0 setzen
+        binding.tvPlayer1Score.text = zero.toString()
+        binding.tvPlayer2Score.text = zero.toString()
+    }
+
+    //endregion
 }
