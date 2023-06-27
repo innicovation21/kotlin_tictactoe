@@ -12,7 +12,7 @@ In diesem kleinen Projekt wenden wir das erste mal unser Basiswissen an und lern
   
 - Erstellen von wiederverwendbaren Styles-Vorlagen
   
-- UI-Binding
+- [UI-Binding](https://gist.github.com/innicovation21/d2ec6fbf480e64fa7337fca6816a4462)
   
 - Benutzerdefinierte Funktionen erstellen und entsprechenden View-Elementen zuweisen
   
