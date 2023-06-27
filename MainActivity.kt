@@ -46,24 +46,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //region Sonstiges
-        //AlertDialog bei Sieg
+        
+        //region AlertDialog bei Sieg
         showEnd = AlertDialog.Builder(this)
             .setView(R.layout.custom_alert)
             .setOnDismissListener {
                 resetGame()
-                Toast.makeText(this, "$matchWinner hat das letzte Match gewonnen.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$matchWinner hat gewonnen.", Toast.LENGTH_SHORT).show()
             }
             .create()
+        //endregion
+
+        //region Initialisierung der SharedPreferences
+        sharedPreferences = getSharedPreferences("unserSpeicher", Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+        //endregion
 
         //endregion
 
         //region Initialisierung der Variablen
-
-        // Initialisierung der SharedPreferences
-        sharedPreferences = getSharedPreferences("unserSpeicher", Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
-
-
 
         //region Score der Spieler eintragen
 
@@ -154,23 +155,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Funktion für MatchEnde
+    // Funktion fürs Spielende
     private fun matchDone(){
         matchFinished = true
+        showEnd.show()
+        //wenn aktuell Spieler X dran wäre
         if (currentPlayer){
+            //dann hat kurz zuvor Spieler O gewonnen
             matchWinner = playerO
             scrP2++
-            binding.tvPlayer2Score.text = scrP2.toString()
             editor.putInt("scrP2", scrP2).apply()
+            binding.tvPlayer2Score.text = scrP2.toString()
         } else {
+            // ansonsten hat Spieler X gewonnen.
             matchWinner = playerX
             scrP1++
-            binding.tvPlayer1Score.text = scrP1.toString()
             editor.putInt("scrP1", scrP1).apply()
+            binding.tvPlayer1Score.text = scrP1.toString()
         }
-        showEnd.show()
     }
-
     // Resetten / New Game (Funktion für diese Aktion definieren)
     private fun resetGame() {
         // forEach geht einmal durch die Buttonliste und ändert den Text bei
@@ -203,10 +206,6 @@ class MainActivity : AppCompatActivity() {
             // überprüfung ob Siegeszug
             checkWinner()
         }
-
-
-
-
     }
 
     // zum Screen für Namensänderung
@@ -221,16 +220,17 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Resetten der Punkte
+        // Funktion zum Resetten der Punktezähler(Variable, SharedPref, TextView)
     private fun resetScore(){
-        //Variable mit Wert 0 zum späteren zuweisen
-        val zero = 0
-        // im lokalen Speicher die Punkte-Stände auf 0 setzen
-        editor.putInt("scrP1", zero).apply()
-        editor.putInt("scrP2", zero).apply()
-        // Punkteanzeigen ebenfalls auf 0 setzen
-        binding.tvPlayer1Score.text = zero.toString()
-        binding.tvPlayer2Score.text = zero.toString()
+        // Zähler im lokalen Speicher auf 0
+        editor.putInt("scrP1", 0).apply()
+        editor.putInt("scrP2", 0).apply()
+        // Variablen für Punkte auf 0
+        scrP1 = 0
+        scrP2 = 0
+        // Punkteanzeige aktualisieren
+        binding.tvPlayer1Score.text = scrP1.toString()
+        binding.tvPlayer2Score.text = scrP2.toString()
     }
 
     //endregion
