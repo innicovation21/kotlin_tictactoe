@@ -66,17 +66,6 @@ class MainActivity : AppCompatActivity() {
 
         //region Initialisierung der Variablen
 
-        //region Score der Spieler eintragen
-
-        // Abrufen der lokal gespeicherten Punktestände von Spieler 1 und Spieler 2 und den Variablen zuweisen
-        scrP1 = sharedPreferences.getInt("scrP1", 0)
-        scrP2 = sharedPreferences.getInt("scrP2", 0)
-
-        binding.tvPlayer1Score.text = scrP1.toString()
-        binding.tvPlayer2Score.text = scrP2.toString()
-
-        //endregion
-
 
         //region Buttons in die Button-Liste einfügen (Initialisierung)
         btnList= listOf(binding.btn1, binding.btn2, binding.btn3,
@@ -85,25 +74,17 @@ class MainActivity : AppCompatActivity() {
         //endregion
 
         //region Namen bei Activity-Start zuweisen
-        // Mögliche mitgegebene IntentPakete abrufen (bei Appstart existieren diese nicht, daher "null")
+        
         val getName1 = intent.getStringExtra("name1")
-        // wenn getName1 nicht null ist (das geht nur, wenn die mainactivity von activity2 aus gestartet wurde)
-        if (getName1!=null){
-            playerX = getName1.toString()
-            //dann wird der name aus der namensänderung eingesetzt
-            binding.tvPlayer1Name.text = "$getName1 (X)"
-        }else {
-            // ansonsten, da appstart, wird die default variable eingesetzt
-            binding.tvPlayer1Name.text = "$playerX (X)"
-        }
-
-
         val getName2 = intent.getStringExtra("name2")
+
+        // wenn getName nicht null ist, dann kommen wir
+        // demzufolge aus der secondactivity
+        if (getName1!=null){
+            playerX = getName1
+        }
         if (getName2!=null){
             playerO = getName2
-            binding.tvPlayer2Name.text = "$getName2 (O)"
-        }else {
-            binding.tvPlayer2Name.text = "$playerO (O)"
         }
 
         //endregion
@@ -111,8 +92,17 @@ class MainActivity : AppCompatActivity() {
 
 
         // tvNext gibt direkt an, wer beginnt
-        binding.tvNext.text = "$playerX beginnt" //Hinweise aufgrund hardcoded Text. Wir belassen es dabei für diese BeispielApp
+        binding.tvNext.text = "Spieler $playerX beginnt"
 
+        // anzeige der Spielernamen
+        binding.tvPlayer1Name.text = playerX
+        binding.tvPlayer2Name.text = playerO
+        // Abrufen der Spielerpunkte aus local Storage
+        scrP1 = sharedPreferences.getInt("scrP1", 0)
+        scrP2 = sharedPreferences.getInt("scrP2", 0)
+        // anzeige der Spielerpunkte
+        binding.tvPlayer1Score.text = scrP1.toString()
+        binding.tvPlayer2Score.text = scrP2.toString()
         //endregion
 
         //region Funktionen zuweisen
