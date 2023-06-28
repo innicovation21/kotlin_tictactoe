@@ -20,7 +20,7 @@ In diesem kleinen Projekt wenden wir das erste mal unser Basiswissen an und lern
   
 - benutzerdefinierte Layouts erstellen und implementieren
   
-- local storage mit SharedPreferences (Speichern und Editieren)
+- [local storage mit SharedPreferences (Speichern und Editieren)](https://gist.github.com/innicovation21/c326a8a192649e0abfbc5e6a496ab0ab)
   
 - Starten weiterer Activities und Übermittlung von Daten
   
