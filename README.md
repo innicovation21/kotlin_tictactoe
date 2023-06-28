@@ -10,7 +10,7 @@ In diesem kleinen Projekt wenden wir das erste mal unser Basiswissen an und lern
 
 - Benutzeroberfläche mit Constraint- und LinearLayout erstellen
   
-- Erstellen von wiederverwendbaren Styles-Vorlagen
+- [Erstellen von wiederverwendbaren Styles-Vorlagen](https://gist.github.com/innicovation21/d567d21c61e17025b8f2638a26b5b8cc)
   
 - [UI-Binding](https://gist.github.com/innicovation21/d2ec6fbf480e64fa7337fca6816a4462)
   
