@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity"
-    android:background="@drawable/myname3">
+    tools:context=".SecondActivity">
 
     <TextView
         app:layout_constraintStart_toStartOf="parent"
